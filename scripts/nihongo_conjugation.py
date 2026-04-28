@@ -1,3 +1,7 @@
+# v0.1 - intitial release notes:
+# Currently this only coded to handle a specific subset of forms using a random module. the next update v0.2 will work with user input rather than a select list
+
+
 import random
 
 def conjugation_game():
