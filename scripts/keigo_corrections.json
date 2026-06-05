@@ -1,0 +1,242 @@
+{
+  "corrections": [
+    {
+      "casual": "行きます",
+      "keigo": "参ります",
+      "level": "honorific",
+      "notes": "polite form of 行く"
+    },
+    {
+      "casual": "行く",
+      "keigo": "参ります",
+      "level": "honorific",
+      "form": "plain",
+      "notes": "dictionary form of 行きます"
+    },
+    {
+      "casual": "食べます",
+      "keigo": "いただきます",
+      "level": "humble",
+      "notes": "polite form of 食べる"
+    },
+    {
+      "casual": "食べる",
+      "keigo": "いただきます",
+      "level": "humble",
+      "form": "plain",
+      "notes": "dictionary form of 食べます"
+    },
+    {
+      "casual": "します",
+      "keigo": "いたします",
+      "level": "humble",
+      "notes": "polite form of する"
+    },
+    {
+      "casual": "する",
+      "keigo": "いたします",
+      "level": "humble",
+      "form": "plain",
+      "notes": "dictionary form of します"
+    },
+    {
+      "casual": "ある",
+      "keigo": "ございます",
+      "level": "formal",
+      "form": "plain",
+      "notes": "dictionary form of あります"
+    },
+    {
+      "casual": "です",
+      "keigo": "でございます",
+      "level": "formal",
+      "notes": "copula polite form"
+    },
+    {
+      "casual": "来る",
+      "keigo": "参ります",
+      "level": "humble",
+      "form": "plain",
+      "notes": "dictionary form of 来ます"
+    },
+    {
+      "casual": "来ます",
+      "keigo": "参ります",
+      "level": "humble",
+      "notes": "polite form of 来る"
+    },
+    {
+      "casual": "あります",
+      "keigo": "ございます",
+      "level": "formal",
+      "notes": "polite form of ある"
+    },
+    {
+      "casual": "飲む",
+      "keigo": "いただきます",
+      "level": "humble",
+      "form": "plain",
+      "notes": "dictionary form of 飲みます"
+    },
+    {
+      "casual": "飲みます",
+      "keigo": "いただきます",
+      "level": "humble",
+      "notes": "polite form of 飲む"
+    },
+    {
+      "casual": "言う",
+      "keigo": "申し上げます",
+      "level": "humble",
+      "form": "plain",
+      "notes": "dictionary form of 言います"
+    },
+    {
+      "casual": "言います",
+      "keigo": "申し上げます",
+      "level": "humble",
+      "notes": "polite form of 言う"
+    },
+    {
+      "casual": "見る",
+      "keigo": "拝見します",
+      "level": "humble",
+      "form": "plain",
+      "notes": "dictionary form of 見ます"
+    },
+    {
+      "casual": "見ます",
+      "keigo": "拝見します",
+      "level": "humble",
+      "notes": "polite form of 見る"
+    },
+    {
+      "casual": "くれる",
+      "keigo": "くださいます",
+      "level": "honorific",
+      "form": "plain",
+      "notes": "dictionary form of くれます"
+    },
+    {
+      "casual": "くれます",
+      "keigo": "くださいます",
+      "level": "honorific",
+      "notes": "polite form of くれる"
+    },
+    {
+      "casual": "いる",
+      "keigo": "いらっしゃる",
+      "level": "honorific",
+      "form": "plain",
+      "notes": "dictionary form of います"
+    },
+    {
+      "casual": "います",
+      "keigo": "いらっしゃいます",
+      "level": "honorific",
+      "notes": "polite form of いる"
+    },
+    {
+      "casual": "寝る",
+      "keigo": "お休みになる",
+      "level": "honorific",
+      "form": "plain",
+      "notes": "dictionary form of 寝ます"
+    },
+    {
+      "casual": "寝ます",
+      "keigo": "お休みになります",
+      "level": "honorific",
+      "notes": "polite form of 寝る"
+    },
+    {
+      "casual": "着る",
+      "keigo": "お召しになる",
+      "level": "honorific",
+      "form": "plain",
+      "notes": "dictionary form of 着ます"
+    },
+    {
+      "casual": "着ます",
+      "keigo": "お召しになります",
+      "level": "honorific",
+      "notes": "polite form of 着る"
+    },
+    {
+      "casual": "もらう",
+      "keigo": "いただきます",
+      "level": "humble",
+      "form": "plain",
+      "notes": "dictionary form of もらいます"
+    },
+    {
+      "casual": "もらいます",
+      "keigo": "いただきます",
+      "level": "humble",
+      "notes": "polite form of もらう"
+    },
+    {
+      "casual": "待つ",
+      "keigo": "お待ちになる",
+      "level": "honorific",
+      "form": "plain",
+      "notes": "dictionary form of 待ちます"
+    },
+    {
+      "casual": "待ちます",
+      "keigo": "お待ちになります",
+      "level": "honorific",
+      "notes": "polite form of 待つ"
+    },
+    {
+      "casual": "知っている",
+      "keigo": "ご存じです",
+      "level": "honorific",
+      "form": "plain",
+      "notes": "dictionary form of 知っています"
+    },
+    {
+      "casual": "あげる",
+      "keigo": "差し上げます",
+      "level": "humble",
+      "form": "plain",
+      "notes": "dictionary form of あげます"
+    },
+    {
+      "casual": "茶",
+      "keigo": "お茶",
+      "level": "polite",
+      "notes": "polite noun form"
+    },
+    {
+      "casual": "水",
+      "keigo": "お水",
+      "level": "polite",
+      "notes": "polite noun form"
+    },
+    {
+      "casual": "酒",
+      "keigo": "お酒",
+      "level": "polite",
+      "notes": "polite noun form"
+    },
+    {
+      "casual": "時間",
+      "keigo": "お時間",
+      "level": "polite",
+      "notes": "polite noun form"
+    },
+    {
+      "casual": "家族",
+      "keigo": "ご家族",
+      "level": "polite",
+      "notes": "polite noun form"
+    },
+    {
+      "casual": "研究",
+      "keigo": "ご研究",
+      "level": "polite",
+      "notes": "polite noun form"
+    }
+  ]
+}
