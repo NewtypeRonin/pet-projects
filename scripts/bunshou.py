@@ -18,6 +18,32 @@ class SentenceBuilder:
     def assemble(self):
         return f"{self.subject} {self.object} {self.verb}"
     
+    #to do: Add a means of checking if the sentence is gramattically correct via grammar pattern JSON
+    #to do: Add a means of checking if the sentence is semantically correct via a dictionary JSON
+    #to do in the far future: Add a means of checking if the sentence is culturally appropriate via a cultural norms JSON
+
+    '''
+        I'll mostly muse my thoughts here. Currently this is pretty rudimentary but it's straight forward enough that we can get it off the ground.
+
+        Further in maybe a 2.0 or 3.0 iteration we can have things like a keigo checker which will allow us to give stricter checks on the verb forms and words beingn used. 
+        i.e. A waiter talking to a customer, a student talking to a teacher, an employee talking to his boss, etc. etc. 
+
+        For the time being we need to factor in a means of looping the service itself. 
+
+        Would it be better to have the sentence building loop inside this class or in the main method itself....
+
+        Maybe I should have a separate class for the sentence building loop and have this class just be responsible for building the sentence and checking it against the grammar and dictionary JSONs.
+        but then again maybe that's overkill for such a simple service.
+
+        But then again beyond that is this gonna be a simple service in the future?
+        will it be a simple service that just builds sentences or will it be a more complex service that also checks for grammar and semantics and cultural appropriateness?
+
+        Also will I want to add a means of checking for politeness levels in the future?
+
+        What types of concepts of programming and python do I want to practice in this project? I want to practice OOP, JSON handling, and maybe some basic NLP concepts in the future.
+        The best concepts for the project right now are definitely OOP and JSON handling. I can have the grammar patterns and dictionary entries stored in JSON files and have the 
+        SentenceBuilder class handle loading those files and checking the sentences against them.
+    '''
 
 if __name__ == "__main__":
     
