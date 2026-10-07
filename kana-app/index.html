@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1020" />
+    <title>Kana Match</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">offline study</p>
+          <h1>Kana Match</h1>
+        </div>
+        <button id="resetButton" class="ghost-button" type="button">Reset</button>
+      </header>
+
+      <section class="mode-picker" aria-label="Kana mode selector">
+        <button class="mode-button active" data-mode="mixed" type="button">Mixed</button>
+        <button class="mode-button" data-mode="hiragana" type="button">Hiragana</button>
+        <button class="mode-button" data-mode="katakana" type="button">Katakana</button>
+      </section>
+
+      <section class="score-panel" aria-label="Score summary">
+        <div class="metric">
+          <span>Correct</span>
+          <strong id="correctValue">0</strong>
+        </div>
+        <div class="metric">
+          <span>Attempted</span>
+          <strong id="attemptedValue">0</strong>
+        </div>
+        <div class="metric accent">
+          <span>Accuracy</span>
+          <strong id="accuracyValue">0%</strong>
+        </div>
+      </section>
+
+      <section class="prompt-panel" aria-live="polite">
+        <div class="font-bank" aria-hidden="true">
+          <span class="font-sample sample-1">あ</span>
+          <span class="font-sample sample-2">あ</span>
+          <span class="font-sample sample-3">あ</span>
+          <span class="font-sample sample-4">あ</span>
+        </div>
+        <div id="kanaDisplay" class="kana-display">あ</div>
+        <p class="question-label">Type the pronunciation</p>
+      </section>
+
+      <form id="answerForm" class="answer-form">
+        <label class="sr-only" for="answerInput">Romanization answer</label>
+        <input
+          id="answerInput"
+          type="text"
+          inputmode="latin"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="Example: ka or jyu"
+          aria-label="Pronunciation answer"
+        />
+
+        <div class="action-row">
+          <button type="submit" class="primary-button">Check</button>
+          <button type="button" id="skipButton" class="secondary-button">Skip</button>
+        </div>
+      </form>
+
+      <p id="feedback" class="feedback neutral">Ready to begin.</p>
+
+      <section class="session-panel">
+        <div class="panel-header">
+          <h2>Session</h2>
+          <span id="streakValue" class="streak-pill">Streak: 0</span>
+        </div>
+        <p id="sessionSummary">0 / 0 right</p>
+        <ul id="historyList" class="history-list" aria-live="polite"></ul>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
