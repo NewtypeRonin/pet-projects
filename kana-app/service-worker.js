@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kana-match-v1';
+const CACHE_NAME = 'kana-match-v2';
 const APP_SHELL = [
   './',
   './index.html',
@@ -20,7 +20,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys
-          .filter((key) => key !== CACHE_NAME)
+          .filter((key) => key.startsWith('kana-match-') && key !== CACHE_NAME)
           .map((key) => caches.delete(key))
       )
     )

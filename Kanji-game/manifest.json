@@ -1,6 +1,7 @@
 {
   "name": "言葉の書庫 — Kotoba Archive",
   "short_name": "言葉の書庫",
+  "id": "./",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#282327",

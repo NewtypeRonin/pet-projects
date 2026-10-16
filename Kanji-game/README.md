@@ -34,6 +34,8 @@ For phone installation, publish the repository to a static HTTPS host (GitHub Pa
 
 The web app is not an APK. Service workers require HTTPS (except localhost), so a plain `http://<computer-ip>:8000` address is only a quick page preview—not an offline-capable install on a phone.
 
+Kana Match is a separate PWA at `/kana-app/` on the same site. Both manifests have distinct folder-based app IDs and both service workers are limited to their own folder/cache, so they can coexist without one clearing the other's offline study data. If the phone says Kana Match is already installed, remove the old Kana Match app/shortcut first, then open its exact `/kana-app/` URL and install it again.
+
 ## Refresh dictionary data
 
 Run `python tools/enrich_jlpt_data.py` from this folder while connected to the internet. The standard-library script downloads the official English JMdict and KANJIDIC2 releases, rebuilds the enriched JSON and coverage report, and records source URLs and license. Previously downloaded release archives can be supplied as `--jmdict` and `--kanjidic` paths to reproduce a data build.

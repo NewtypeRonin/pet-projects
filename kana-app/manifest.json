@@ -1,6 +1,7 @@
 {
   "name": "Kana Match",
   "short_name": "KanaMatch",
+  "id": "./",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#0b1020",

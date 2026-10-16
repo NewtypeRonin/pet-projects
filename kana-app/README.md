@@ -62,6 +62,8 @@ If you want a cleaner sharing flow, host the app files on a static host such as 
 4. On the phone, open the URL and install it to the home screen.
 5. Once installed, it can keep working offline.
 
+Kana Match and Kotoba Archive can both be installed from separate folders on the same GitHub Pages site. Each manifest has its own folder-relative app ID and each service worker is scoped to its own folder. If a phone still says "already installed," remove the old Kana Match home-screen app/shortcut (and uninstall its web app in the phone's app settings if present), then revisit the exact `/kana-app/` URL in the browser and install again. The Kana service worker only clears its own cache, leaving Kotoba Archive's offline JLPT data intact.
+
 ### Option 3: easier for a friend to test
 
 If you want the simplest path for someone else:
