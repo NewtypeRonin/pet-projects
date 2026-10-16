@@ -7,7 +7,7 @@
     <title>言葉の書庫 — Kotoba Archive</title>
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="style.css?v=10" />
+    <link rel="stylesheet" href="style.css?v=11" />
   </head>
   <body>
     <main class="app-shell">
@@ -92,7 +92,7 @@
         </div>
         <p class="panel-note attribution">Stroke diagrams from KanjiVG, licensed under CC BY-SA 3.0.</p>
       </section>
-      <footer class="app-footer"><span>ARCHIVE BUILD 01</span><span>OFFLINE STUDY MODE</span></footer>
+      <footer class="app-footer"><span>ARCHIVE BUILD 01</span><span id="offlineStatus" role="status" aria-live="polite">CHECKING OFFLINE FILES…</span></footer>
     </main>
 
     <dialog id="sourcesDialog" class="sources-dialog">
@@ -113,6 +113,6 @@
         <button id="closeSourcesButton" class="primary-button" type="button">Return to study</button>
       </div>
     </dialog>
-    <script src="app.js?v=10"></script>
+    <script src="app.js?v=11"></script>
   </body>
 </html>

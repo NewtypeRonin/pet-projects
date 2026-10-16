@@ -23,14 +23,14 @@ From the repository root, serve the project over HTTP and open `http://localhost
 
 ## Offline and phone use
 
-The service worker caches the full app, both original lists, the generated enriched dictionaries, and the coverage report. Stroke SVGs are fetched from [KanjiVG](https://github.com/KanjiVG/kanjivg) into a dedicated persistent cache when accessed. To make the entire supplied JLPT stroke list available offline, open Stroke Order mode while online and choose **Save all strokes offline**; this optional download can take a while.
+The service worker automatically caches the full app, both original lists, the enriched vocabulary, kanji meanings/readings, and coverage report. After a successful first online visit, the vocab and kanji games and all JLPT data work offline; the footer confirms **OFFLINE READY · VOCAB + KANJI SAVED** when it verifies those files in the device cache. Stroke SVGs are fetched from [KanjiVG](https://github.com/KanjiVG/kanjivg) into a separate persistent cache when accessed. To make the entire supplied JLPT stroke list available offline too, open Stroke Order mode while online and choose **Save all strokes offline**; this optional download can take a while.
 
 For phone installation, publish the repository to a static HTTPS host (GitHub Pages works with this folder layout):
 
 1. Push this repository to GitHub and enable Pages for the `main` branch, serving from the repository root. Keep the `Kanji-game/JSON/` folder alongside these app files in the published site.
 2. On the phone, open `https://<account>.github.io/<repository>/Kanji-game/` while online.
 3. **Android:** in Chrome, use the menu and choose **Install app** (or **Add to Home screen**). **iPhone:** in Safari, tap **Share → Add to Home Screen**.
-4. Open the installed icon once while online so the app shell and all study data cache locally. Open Stroke Order once online and use **Save all strokes offline** if the complete stroke library should work offline too.
+4. Open the installed icon once while online. Wait for the footer to say **OFFLINE READY · VOCAB + KANJI SAVED**; this confirms the app shell, full vocabulary database, and full kanji database/meanings are cached locally. Open Stroke Order once online and use **Save all strokes offline** if the complete stroke library should work offline too.
 
 The web app is not an APK. Service workers require HTTPS (except localhost), so a plain `http://<computer-ip>:8000` address is only a quick page preview—not an offline-capable install on a phone.
 

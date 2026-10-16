@@ -382,11 +382,44 @@ async function loadData() {
     state.vocab = buildVocabulary(vocabData);
     state.kanji = buildKanji(kanjiData, details);
     setFeedback(`Loaded ${state.vocab.length.toLocaleString()} vocabulary entries and ${state.kanji.length.toLocaleString()} kanji.`, 'success');
+    verifyOfflineData();
     await nextQuestion();
     renderKanji();
   } catch (error) {
     console.error(error);
     setFeedback('Could not load the JSON files in Kanji-game/JSON. Reload while online and verify both files are present.', 'error');
+  }
+}
+async function verifyOfflineData() {
+  const status = $('#offlineStatus');
+  if (!('serviceWorker' in navigator) || !('caches' in window)) {
+    status.textContent = 'OFFLINE INSTALL NEEDS HTTPS';
+    status.classList.add('offline-warning');
+    return;
+  }
+  try {
+    await navigator.serviceWorker.ready;
+    const requiredFiles = [
+      './index.html', './style.css?v=10', './app.js?v=10',
+      './JSON/JLPT_vocab_ALL.json', './JSON/JLPT_kanji_ALL.json',
+      './JSON/JLPT_vocab_enriched.json', './JSON/JLPT_kanji_details.json'
+    ];
+    const cached = await Promise.all(requiredFiles.map(async (path) =>
+      Boolean(await caches.match(new URL(path, document.baseURI).href))
+    ));
+    const missing = requiredFiles.filter((_, index) => !cached[index]);
+    if (missing.length) {
+      status.textContent = `OFFLINE CACHE INCOMPLETE · ${missing.length} FILES`;
+      status.title = `Open online and reload to cache: ${missing.join(', ')}`;
+      status.classList.add('offline-warning');
+      return;
+    }
+    status.textContent = 'OFFLINE READY · VOCAB + KANJI SAVED';
+    status.title = 'App shell and all vocabulary and kanji study data are saved on this device.';
+    status.classList.remove('offline-warning');
+  } catch {
+    status.textContent = 'OFFLINE CACHE NOT CONFIRMED';
+    status.classList.add('offline-warning');
   }
 }
 function renderKanji() {
@@ -487,6 +520,16 @@ $('#sourcesDialog').addEventListener('click', (event) => {
 $('#closeStrokeButton').addEventListener('click', () => { $('#strokeViewer').hidden = true; });
 $('#restartStrokeButton').addEventListener('click', () => { state.strokeIndex = 0; updateStrokeStep(); });
 $('#nextStrokeButton').addEventListener('click', () => { state.strokeIndex = Math.min(state.strokeIndex + 1, state.strokePaths.length); updateStrokeStep(); });
-if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch((error) => console.warn('Service worker registration failed:', error)));
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(() => verifyOfflineData())
+      .catch((error) => {
+        console.warn('Service worker registration failed:', error);
+        $('#offlineStatus').textContent = 'OFFLINE CACHE NOT AVAILABLE';
+        $('#offlineStatus').classList.add('offline-warning');
+      });
+  });
+}
 renderStats();
 loadData();

@@ -320,6 +320,8 @@ button:disabled { opacity: .55; cursor: wait; }
 .stroke-viewer .action-row > button { min-width: 120px; }
 .attribution { margin-top: 13px; }
 .app-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(197, 167, 110, .25); color: #8f8177; font-size: .62rem; letter-spacing: .16em; }
+#offlineStatus { color: #a7c6a9; text-align: right; }
+#offlineStatus.offline-warning { color: #e4b273; }
 
 .sources-dialog {
   width: min(92vw, 590px);
