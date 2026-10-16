@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#282327" />
+    <title>言葉の書庫 — Kotoba Archive</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css?v=10" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brandmark" aria-hidden="true">字</div>
+        <div class="brand-copy">
+          <p class="eyebrow">STUDY ROOM · RECORD 01</p>
+          <h1>言葉の書庫</h1>
+          <p class="brand-subtitle">KOTOBA ARCHIVE <span>—</span> Japanese study</p>
+        </div>
+        <div class="top-actions">
+          <button id="sourcesButton" class="ghost-button" type="button">Sources</button>
+          <button id="resetButton" class="ghost-button" type="button">Reset session</button>
+        </div>
+      </header>
+
+      <nav class="mode-picker" aria-label="Study mode">
+        <button class="mode-button active" data-mode="vocabulary" type="button">Vocabulary</button>
+        <button class="mode-button" data-mode="kanji" type="button">Kanji Match</button>
+        <button class="mode-button" data-mode="stroke" type="button">Stroke Order</button>
+      </nav>
+
+      <section class="score-and-controls">
+      <section id="quizControls" class="controls">
+        <label class="control-label" for="levelSelect">JLPT level
+          <select id="levelSelect">
+            <option value="all">All levels</option><option value="5">N5</option><option value="4">N4</option>
+            <option value="3">N3</option><option value="2">N2</option><option value="1">N1</option>
+          </select>
+        </label>
+        <label id="directionControl" class="control-label" for="directionSelect">Match direction
+          <select id="directionSelect"><option value="word-reading">Word → reading</option><option value="reading-word">Reading → word</option></select>
+        </label>
+      </section>
+
+      <section id="scorePanel" class="score-panel" aria-label="Score summary">
+        <div class="metric"><span>Correct</span><strong id="correctValue">0</strong></div>
+        <div class="metric"><span>Attempted</span><strong id="attemptedValue">0</strong></div>
+        <div class="metric accent"><span>Accuracy</span><strong id="accuracyValue">0%</strong></div>
+      </section>
+      </section>
+
+      <section id="quizPanel" class="prompt-panel" aria-live="polite">
+        <div class="scene-caption"><span id="speakerLabel">VOCABULARY DESK</span><span id="levelBadge">ALL LEVELS</span></div>
+        <div id="promptDisplay" class="prompt-display">語彙</div>
+        <p id="questionLabel" class="question-label">Type the reading (kana or romaji)</p>
+      </section>
+      <form id="answerForm" class="answer-form">
+        <label id="answerLabel" class="sr-only" for="answerInput">Answer</label>
+        <input id="answerInput" type="text" inputmode="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Type your answer" />
+        <div class="action-row"><button class="primary-button" type="submit">Check</button><button id="skipButton" class="secondary-button" type="button">Skip</button><button id="nextQuestionButton" class="secondary-button" type="button" hidden>Continue</button></div>
+      </form>
+      <p id="feedback" class="feedback neutral" aria-live="polite">Loading complete JLPT data…</p>
+      <div id="answerDetails" class="answer-details" hidden></div>
+
+      <section id="sessionPanel" class="session-panel">
+        <div class="panel-header"><h2>Session</h2><span id="streakValue" class="streak-pill">Streak: 0</span></div>
+        <p id="sessionSummary">0 / 0 right</p><ul id="historyList" class="history-list" aria-live="polite"></ul>
+      </section>
+
+      <section id="strokePanel" class="stroke-panel" hidden>
+        <div class="panel-header">
+          <div><h2>Kanji stroke lookup</h2><p class="panel-note">Browse every kanji in the supplied JLPT list.</p></div>
+          <button id="downloadStrokesButton" class="secondary-button" type="button">Save all strokes offline</button>
+        </div>
+        <div class="lookup-controls">
+          <label class="control-label" for="kanjiLevelSelect">Level
+            <select id="kanjiLevelSelect"><option value="all">All levels</option><option value="5">N5</option><option value="4">N4</option><option value="3">N3</option><option value="2">N2</option><option value="1">N1</option></select>
+          </label>
+          <label class="control-label" for="kanjiSearch">Find kanji
+            <input id="kanjiSearch" type="search" placeholder="Enter a kanji character" autocomplete="off" />
+          </label>
+        </div>
+        <p id="kanjiCount" class="panel-note" aria-live="polite"></p>
+        <ul id="kanjiList" class="kanji-list" aria-label="JLPT kanji results"></ul>
+        <div id="strokeViewer" class="stroke-viewer" hidden>
+          <div class="panel-header"><h3 id="strokeTitle"></h3><button id="closeStrokeButton" class="ghost-button" type="button">Close</button></div>
+          <div id="strokeSvg" class="stroke-svg"></div>
+          <div id="kanjiDictionaryInfo" class="dictionary-info" hidden></div>
+          <p id="strokeStep" class="panel-note" aria-live="polite"></p>
+          <div class="action-row"><button id="restartStrokeButton" class="secondary-button" type="button">Restart</button><button id="nextStrokeButton" class="primary-button" type="button">Next stroke</button></div>
+        </div>
+        <p class="panel-note attribution">Stroke diagrams from KanjiVG, licensed under CC BY-SA 3.0.</p>
+      </section>
+      <footer class="app-footer"><span>ARCHIVE BUILD 01</span><span>OFFLINE STUDY MODE</span></footer>
+    </main>
+
+    <dialog id="sourcesDialog" class="sources-dialog">
+      <div class="sources-content">
+        <p class="eyebrow">ARCHIVE NOTES</p>
+        <h2>Sources &amp; credits</h2>
+        <p>This study tool includes adapted vocabulary and kanji information from the Electronic Dictionary Research and Development Group.</p>
+        <p>JMdict/EDICT provides Japanese-English vocabulary entries. KANJIDIC2 provides kanji meanings and readings. Both are licensed under Creative Commons Attribution-ShareAlike 4.0.</p>
+        <ul>
+          <li><a href="https://www.edrdg.org/jmdict/j_jmdict.html" target="_blank" rel="noreferrer">JMdict project and downloads</a></li>
+          <li><a href="https://www.edrdg.org/kanjidic/kanjidic2_dtdh.html" target="_blank" rel="noreferrer">KANJIDIC2 documentation</a></li>
+          <li><a href="https://www.edrdg.org/edrdg/licence.html" target="_blank" rel="noreferrer">EDRDG dictionary licence</a></li>
+          <li><a href="EDRDG-LICENSE.html">Offline copy of EDRDG licence</a></li>
+          <li><a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0 licence text</a></li>
+        </ul>
+        <p>Stroke-order diagrams are from KanjiVG under CC BY-SA 3.0. See the project <a href="https://github.com/KanjiVG/kanjivg" target="_blank" rel="noreferrer">source repository</a>.</p>
+        <p class="license-note">JLPT reading/level assignments come from the local project lists. Dictionary coverage is checked in the included data report; unmatched source entries are left clearly unfilled rather than guessed.</p>
+        <button id="closeSourcesButton" class="primary-button" type="button">Return to study</button>
+      </div>
+    </dialog>
+    <script src="app.js?v=10"></script>
+  </body>
+</html>

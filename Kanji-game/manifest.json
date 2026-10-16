@@ -1,0 +1,10 @@
+{
+  "name": "言葉の書庫 — Kotoba Archive",
+  "short_name": "言葉の書庫",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#282327",
+  "theme_color": "#282327",
+  "description": "A vintage visual-novel style offline JLPT vocabulary and kanji study room.",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
