@@ -7,7 +7,7 @@
     <title>言葉の書庫 — Kotoba Archive</title>
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="style.css?v=11" />
+    <link rel="stylesheet" href="style.css?v=14" />
   </head>
   <body>
     <main class="app-shell">
@@ -28,6 +28,7 @@
         <button class="mode-button active" data-mode="vocabulary" type="button">Vocabulary</button>
         <button class="mode-button" data-mode="kanji" type="button">Kanji Match</button>
         <button class="mode-button" data-mode="stroke" type="button">Stroke Order</button>
+        <button class="mode-button" data-mode="kana-match" type="button">Kana Match</button>
       </nav>
 
       <section class="score-and-controls">
@@ -41,6 +42,11 @@
         <label id="directionControl" class="control-label" for="directionSelect">Match direction
           <select id="directionSelect"><option value="word-reading">Word → reading</option><option value="reading-word">Reading → word</option></select>
         </label>
+        <div id="kanaControls" class="kana-controls" aria-label="Kana set" hidden>
+          <button class="kana-set-button active" data-kana-mode="mixed" type="button">Mixed</button>
+          <button class="kana-set-button" data-kana-mode="hiragana" type="button">Hiragana</button>
+          <button class="kana-set-button" data-kana-mode="katakana" type="button">Katakana</button>
+        </div>
       </section>
 
       <section id="scorePanel" class="score-panel" aria-label="Score summary">
@@ -52,6 +58,12 @@
 
       <section id="quizPanel" class="prompt-panel" aria-live="polite">
         <div class="scene-caption"><span id="speakerLabel">VOCABULARY DESK</span><span id="levelBadge">ALL LEVELS</span></div>
+        <div class="font-bank" id="fontBank" aria-hidden="true" hidden>
+          <span class="font-sample sample-1">あ</span>
+          <span class="font-sample sample-2">あ</span>
+          <span class="font-sample sample-3">あ</span>
+          <span class="font-sample sample-4">あ</span>
+        </div>
         <div id="promptDisplay" class="prompt-display">語彙</div>
         <p id="questionLabel" class="question-label">Type the reading (kana or romaji)</p>
       </section>
@@ -113,6 +125,7 @@
         <button id="closeSourcesButton" class="primary-button" type="button">Return to study</button>
       </div>
     </dialog>
-    <script src="app.js?v=11"></script>
+    <script src="kana-data.js?v=2"></script>
+    <script src="app.js?v=14"></script>
   </body>
 </html>

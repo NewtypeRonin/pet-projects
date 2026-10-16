@@ -4,6 +4,7 @@ A standalone, installable, offline Japanese study app styled as a restrained ear
 
 ## Modes
 
+- **Kana Match:** mixed, hiragana-only, and katakana-only pronunciation drills (107 characters in each script, including voiced and contracted kana), with weighted review, randomized Japanese font stacks, and a font comparison strip. This mode switches to the original kana trainer's blue palette and typography; the other modes keep the MS Gothic-first visual-novel styling. The separate `../kana-app/` remains available as its own app.
 - **Vocabulary:** all 8,505 word/reading/level entries, N1–N5 filters, word → reading or reading → word prompts, English glosses, and dictionary notes. Readings accept kana or romaji; romaji and katakana are normalized to hiragana for checking.
 - **Kanji Match:** all 2,211 kanji, filtered by N1–N5, presented as a single plain character to type. Meanings, readings, and stroke counts appear after checking.
 - **Stroke Order:** search/filter all kanji and study a complete, numbered KanjiVG diagram. The Next stroke button highlights strokes in order without hiding the complete character.
@@ -23,14 +24,14 @@ From the repository root, serve the project over HTTP and open `http://localhost
 
 ## Offline and phone use
 
-The service worker automatically caches the full app, both original lists, the enriched vocabulary, kanji meanings/readings, and coverage report. After a successful first online visit, the vocab and kanji games and all JLPT data work offline; the footer confirms **OFFLINE READY · VOCAB + KANJI SAVED** when it verifies those files in the device cache. Stroke SVGs are fetched from [KanjiVG](https://github.com/KanjiVG/kanjivg) into a separate persistent cache when accessed. To make the entire supplied JLPT stroke list available offline too, open Stroke Order mode while online and choose **Save all strokes offline**; this optional download can take a while.
+The service worker automatically caches the full app, kana character table, both original JLPT lists, enriched vocabulary, kanji meanings/readings, and coverage report. After a successful first online visit, all three quiz modes and their data work offline; the footer confirms **OFFLINE READY · KANA + JLPT DATA SAVED** when it verifies those files in the device cache. Stroke SVGs are fetched from [KanjiVG](https://github.com/KanjiVG/kanjivg) into a separate persistent cache when accessed. To make the entire supplied JLPT stroke list available offline too, open Stroke Order mode while online and choose **Save all strokes offline**; this optional download can take a while.
 
 For phone installation, publish the repository to a static HTTPS host (GitHub Pages works with this folder layout):
 
 1. Push this repository to GitHub and enable Pages for the `main` branch, serving from the repository root. Keep the `Kanji-game/JSON/` folder alongside these app files in the published site.
 2. On the phone, open `https://<account>.github.io/<repository>/Kanji-game/` while online.
 3. **Android:** in Chrome, use the menu and choose **Install app** (or **Add to Home screen**). **iPhone:** in Safari, tap **Share → Add to Home Screen**.
-4. Open the installed icon once while online. Wait for the footer to say **OFFLINE READY · VOCAB + KANJI SAVED**; this confirms the app shell, full vocabulary database, and full kanji database/meanings are cached locally. Open Stroke Order once online and use **Save all strokes offline** if the complete stroke library should work offline too.
+4. Open the installed icon once while online. Wait for the footer to say **OFFLINE READY · KANA + JLPT DATA SAVED**; this confirms Kana Match plus the full vocabulary and kanji data are cached locally. Open Stroke Order once online and use **Save all strokes offline** if the complete stroke library should work offline too.
 
 The web app is not an APK. Service workers require HTTPS (except localhost), so a plain `http://<computer-ip>:8000` address is only a quick page preview—not an offline-capable install on a phone.
 

@@ -1,9 +1,10 @@
-const CACHE_NAME = 'kotoba-archive-v11';
+const CACHE_NAME = 'kotoba-archive-v14';
 const APP_SHELL = [
   './',
   './index.html',
-  './style.css?v=11',
-  './app.js?v=11',
+  './style.css?v=14',
+  './kana-data.js?v=2',
+  './app.js?v=14',
   './manifest.json',
   './icon.svg',
   './EDRDG-LICENSE.html',

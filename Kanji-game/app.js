@@ -1,7 +1,8 @@
 const STROKE_BASE = 'https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/';
 const STROKE_CACHE = 'kotoba-kanjivg-strokes-v1';
+const KANA_DATA = window.KANA_MATCH_DATA;
 const state = {
-  mode: 'vocabulary', level: 'all', direction: 'word-reading', vocab: [], kanji: [],
+  mode: 'vocabulary', level: 'all', direction: 'word-reading', kanaMode: 'mixed', vocab: [], kanji: [],
   current: null, correct: 0, attempted: 0, streak: 0, missWeight: new Map(), history: [],
   questionToken: 0, strokePaths: [], strokeIndex: 0
 };
@@ -32,6 +33,7 @@ const ROMAJI_VOWELS = ['a', 'i', 'u', 'e', 'o'];
 Object.entries(ROMAJI_ROWS).forEach(([consonant, kana]) => {
   kana.forEach((character, index) => ROMAJI_KANA.set(`${consonant}${ROMAJI_VOWELS[index]}`, character));
 });
+[['ya', 'や'], ['yu', 'ゆ'], ['yo', 'よ']].forEach(([romaji, kana]) => ROMAJI_KANA.set(romaji, kana));
 [
   ['tokyo', 'とうきょう'], ['kyoto', 'きょうと'],
   ['shi', 'し'], ['si', 'し'], ['chi', 'ち'], ['ti', 'ち'], ['tsu', 'つ'], ['tu', 'つ'],
@@ -161,6 +163,7 @@ function renderHistory() {
   });
 }
 function getPool() {
+  if (state.mode === 'kana-match') return KANA_DATA[state.kanaMode] || KANA_DATA.mixed;
   const pool = state.mode === 'vocabulary' ? state.vocab : state.kanji;
   return state.level === 'all' ? pool : pool.filter((entry) => entry.level === Number(state.level));
 }
@@ -214,23 +217,50 @@ function showPrompt(item) {
   $('#nextQuestionButton').hidden = true;
   $('#answerDetails').hidden = true;
   $('#answerDetails').replaceChildren();
-  $('#levelBadge').textContent = state.level === 'all' ? 'ALL LEVELS' : `JLPT N${state.level}`;
-  $('#speakerLabel').textContent = state.mode === 'vocabulary' ? 'VOCABULARY DESK' : 'KANJI DESK';
+  const isKana = state.mode === 'kana-match';
+  $('#levelBadge').textContent = isKana ? state.kanaMode.toUpperCase() : state.level === 'all' ? 'ALL LEVELS' : `JLPT N${state.level}`;
+  $('#speakerLabel').textContent = isKana ? 'KANA DESK' : state.mode === 'vocabulary' ? 'VOCABULARY DESK' : 'KANJI DESK';
+  $('#fontBank').hidden = !isKana;
   promptDisplay.replaceChildren();
-  $('#questionLabel').textContent = state.mode === 'vocabulary'
-    ? state.direction === 'word-reading' ? 'Type the reading (kana or romaji)' : 'Type the Japanese word'
-    : 'Type the kanji shown';
-  $('#answerLabel').textContent = state.mode === 'vocabulary'
-    ? state.direction === 'word-reading' ? 'Kana reading answer' : 'Japanese word answer'
-    : 'Kanji character answer';
-  answerInput.placeholder = state.mode === 'vocabulary'
-    ? state.direction === 'word-reading' ? 'Type the reading in kana or romaji' : 'Type the word in Japanese'
-    : 'Type the kanji character';
-  if (state.mode === 'vocabulary') {
+  $('#questionLabel').textContent = isKana
+    ? 'Type the pronunciation'
+    : state.mode === 'vocabulary'
+      ? state.direction === 'word-reading' ? 'Type the reading (kana or romaji)' : 'Type the Japanese word'
+      : 'Type the kanji shown';
+  $('#answerLabel').textContent = isKana
+    ? 'Romanized kana answer'
+    : state.mode === 'vocabulary'
+      ? state.direction === 'word-reading' ? 'Kana reading answer' : 'Japanese word answer'
+      : 'Kanji character answer';
+  answerInput.placeholder = isKana
+    ? 'Example: ka or jyu'
+    : state.mode === 'vocabulary'
+      ? state.direction === 'word-reading' ? 'Type the reading in kana or romaji' : 'Type the word in Japanese'
+      : 'Type the kanji character';
+  answerInput.setAttribute('inputmode', isKana ? 'latin' : 'text');
+  if (isKana) {
+    $('#fontBank').querySelectorAll('.font-sample').forEach((sample) => { sample.textContent = item.char; });
+    promptDisplay.classList.add('kana-display');
+    promptDisplay.textContent = item.char;
+    applyKanaFontVariation();
+  } else if (state.mode === 'vocabulary') {
+    promptDisplay.style.fontFamily = '';
+    promptDisplay.classList.remove('kana-display');
     promptDisplay.textContent = state.direction === 'word-reading' ? item.word : preferredReading(item);
   } else {
+    promptDisplay.style.fontFamily = '';
+    promptDisplay.classList.remove('kana-display');
     promptDisplay.textContent = item.char;
   }
+}
+function applyKanaFontVariation() {
+  const fonts = [
+    '"Hiragino Sans", "Yu Gothic", "Meiryo", "MS Gothic", sans-serif',
+    '"MS Mincho", "Yu Mincho", serif',
+    '"Segoe UI", "Noto Sans JP", sans-serif',
+    '"Yu Gothic", "Meiryo", sans-serif'
+  ];
+  promptDisplay.style.fontFamily = fonts[Math.floor(Math.random() * fonts.length)];
 }
 async function nextQuestion() {
   state.questionToken += 1;
@@ -251,11 +281,13 @@ function preferredReading(item) {
   return item.match_type === 'exact' || !item.dictionary_readings?.length ? item.reading : item.dictionary_readings[0];
 }
 function correctAnswers(item) {
+  if (state.mode === 'kana-match') return item.accepts;
   if (state.mode === 'kanji') return [item.char];
   if (state.direction === 'reading-word') return [item.word];
   return [...new Set([item.reading, ...(item.dictionary_readings || [])].filter(Boolean))];
 }
 function questionText(item) {
+  if (state.mode === 'kana-match') return item.char;
   if (state.mode === 'kanji') return item.char;
   return state.direction === 'word-reading' ? item.word : preferredReading(item);
 }
@@ -277,7 +309,10 @@ function appendDetailGroup(parent, label, values) {
 function renderAnswerDetails(item) {
   const panel = $('#answerDetails');
   panel.replaceChildren();
-  if (state.mode === 'kanji') {
+  if (state.mode === 'kana-match') {
+    panel.hidden = true;
+    return;
+  } else if (state.mode === 'kanji') {
     renderKanjiDetails(item, panel);
   } else {
     const meanings = item.meanings || [];
@@ -322,18 +357,20 @@ function submit(skipped = false) {
   const item = state.current;
   if (!item) return;
   const answers = correctAnswers(item);
-  const answer = state.mode === 'vocabulary' && state.direction === 'word-reading' ? preferredReading(item) : answers[0];
+  const answer = state.mode === 'kana-match'
+    ? item.romaji
+    : state.mode === 'vocabulary' && state.direction === 'word-reading' ? preferredReading(item) : answers[0];
   const isCorrect = !skipped && answers.some((candidate) => normalize(answerInput.value) === normalize(candidate));
   state.attempted += 1;
   if (isCorrect) {
     state.correct += 1;
     state.streak += 1;
     state.missWeight.set(item.id, Math.max(0, (state.missWeight.get(item.id) || 0) - 1));
-    setFeedback(`Correct — ${answer}${state.mode === 'kanji' ? ` · N${item.level}` : ''}`, 'success');
+    setFeedback(`Correct — ${item.char}${state.mode === 'kana-match' ? ` = ${item.romaji}` : state.mode === 'kanji' ? ` · N${item.level}` : ` = ${answer}`}`, 'success');
   } else {
     state.streak = 0;
     state.missWeight.set(item.id, (state.missWeight.get(item.id) || 0) + (skipped ? 2 : 3));
-    setFeedback(`${skipped ? 'Skipped' : 'Not quite'} — ${answer}${state.mode === 'kanji' ? ` · N${item.level}` : ''}`, 'error');
+    setFeedback(`${skipped ? 'Skipped' : 'Not quite'} — ${item.char}${state.mode === 'kana-match' ? ` is ${item.romaji}` : state.mode === 'kanji' ? ` · N${item.level}` : ` = ${answer}`}`, 'error');
   }
   renderAnswerDetails(item);
   $('#nextQuestionButton').hidden = false;
@@ -345,6 +382,11 @@ function submit(skipped = false) {
 function changeMode(mode) {
   state.mode = mode;
   const isStroke = mode === 'stroke';
+  const isKana = mode === 'kana-match';
+  document.body.classList.toggle('kana-match-theme', isKana);
+  $('.brand-copy h1').textContent = isKana ? 'Kana Match' : '言葉の書庫';
+  $('.brand-copy .eyebrow').textContent = isKana ? 'OFFLINE STUDY · KANA' : 'STUDY ROOM · RECORD 01';
+  $('.brand-subtitle').innerHTML = isKana ? 'HIRAGANA <span>+</span> KATAKANA PRACTICE' : 'KOTOBA ARCHIVE <span>—</span> Japanese study';
   $('#quizControls').hidden = isStroke;
   $('#scorePanel').hidden = isStroke;
   $('#quizPanel').hidden = isStroke;
@@ -352,6 +394,11 @@ function changeMode(mode) {
   $('#feedback').hidden = isStroke;
   $('#sessionPanel').hidden = isStroke;
   $('#strokePanel').hidden = !isStroke;
+  $('#kanaControls').hidden = !isKana;
+  $('#levelSelect').closest('.control-label').hidden = isKana;
+  $('#kanaControls').querySelectorAll('.kana-set-button').forEach((button) => {
+    button.classList.toggle('active', button.dataset.kanaMode === state.kanaMode);
+  });
   $('#directionControl').hidden = mode !== 'vocabulary';
   document.querySelectorAll('.mode-button').forEach((button) => button.classList.toggle('active', button.dataset.mode === mode));
   if (isStroke) renderKanji();
@@ -400,7 +447,7 @@ async function verifyOfflineData() {
   try {
     await navigator.serviceWorker.ready;
     const requiredFiles = [
-      './index.html', './style.css?v=10', './app.js?v=10',
+      './index.html', './style.css?v=14', './kana-data.js?v=2', './app.js?v=14',
       './JSON/JLPT_vocab_ALL.json', './JSON/JLPT_kanji_ALL.json',
       './JSON/JLPT_vocab_enriched.json', './JSON/JLPT_kanji_details.json'
     ];
@@ -414,8 +461,8 @@ async function verifyOfflineData() {
       status.classList.add('offline-warning');
       return;
     }
-    status.textContent = 'OFFLINE READY · VOCAB + KANJI SAVED';
-    status.title = 'App shell and all vocabulary and kanji study data are saved on this device.';
+    status.textContent = 'OFFLINE READY · KANA + JLPT DATA SAVED';
+    status.title = 'App shell, hiragana/katakana practice data, and all vocabulary and kanji study data are saved on this device.';
     status.classList.remove('offline-warning');
   } catch {
     status.textContent = 'OFFLINE CACHE NOT CONFIRMED';
@@ -507,6 +554,11 @@ $('#resetButton').addEventListener('click', () => {
   renderStats(); renderHistory(); setFeedback('Ready to begin.', 'neutral'); nextQuestion();
 });
 document.querySelectorAll('.mode-button').forEach((button) => button.addEventListener('click', () => changeMode(button.dataset.mode)));
+$('#kanaControls').querySelectorAll('.kana-set-button').forEach((button) => button.addEventListener('click', () => {
+  state.kanaMode = button.dataset.kanaMode;
+  $('#kanaControls').querySelectorAll('.kana-set-button').forEach((option) => option.classList.toggle('active', option === button));
+  nextQuestion();
+}));
 $('#levelSelect').addEventListener('change', (event) => { state.level = event.target.value; nextQuestion(); });
 $('#directionSelect').addEventListener('change', (event) => { state.direction = event.target.value; nextQuestion(); });
 $('#kanjiLevelSelect').addEventListener('change', renderKanji);
